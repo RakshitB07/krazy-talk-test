@@ -5,7 +5,7 @@ export default {
     extend: {},
     fontFamily: {
       sans: ["Roboto", "sans-serif"],
-      serif: ["Roboto", "serif"],
+      serif: ["Honk", "Roboto", "serif"],
       mono: ["Roboto Mono", "monospace"],
     },
   },

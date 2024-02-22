@@ -1,15 +1,13 @@
 import React from "react";
-import coconutTree from "../assets/undraw_refreshing_beverage_td3r.svg";
+import birdLogo from "../assets/bird-beverage.svg";
 import { ReactTyped } from "react-typed";
 
 function LandingPage() {
   return (
     <div>
       <nav className="flex justify-between items-center px-4 py-2">
-        <img className="w-24" src={coconutTree} alt="coconut-tree-image" />
-        <h1 className="text-4xl underline decoration-orange-500/70 decoration-4 font-black">
-          Krazy Talk Baazar
-        </h1>
+        <img className="w-24" src={birdLogo} alt="coconut-tree-image" />
+        <h1 className="font-serif text-6xl">Krazy Talk Baazar</h1>
         <ul className="flex">
           <a
             href="#"
@@ -26,17 +24,20 @@ function LandingPage() {
         </ul>
       </nav>
       <div>
-        <div className="text-5xl w-6/12 mx-auto text-left mt-56">
+        <div className="text-5xl w-6/12 mx-auto text-left mt-44">
           <p>
-            Ever wished for an all in one website? Wait no more! Now you can,
+            Ever wished for an all in one website? Wait no more! Now you can,{" "}
+            <span>
+              <ReactTyped
+                strings={["Chat", "Shop", "Listen to music", "Watch videos"]}
+                typeSpeed={40}
+                backSpeed={50}
+                loop
+                className="text-orange-500"
+              />
+            </span>
           </p>
-          <ReactTyped
-            strings={["Chat", "Shop", "Listen to music", "Watch videos"]}
-            typeSpeed={40}
-            backSpeed={50}
-            loop
-            className="text-orange-500"
-          />
+
           <p>All from one website!!</p>
         </div>
 
