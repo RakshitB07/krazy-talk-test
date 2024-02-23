@@ -1,9 +1,12 @@
 import React from "react";
 import ChatCardComponent from "./ChatCardComponent";
+import Sidebar from "./Sidebar";
 
 function MainChatPage() {
   return (
     <div>
+      <Sidebar />
+
       <nav className="mb-4 flex justify-between items-center px-4 py-2">
         {/* <img className="w-24" src={coconutTree} alt="coconut-tree-image" /> */}
         <h1 className="font-serif text-6xl">Chat</h1>
@@ -42,6 +45,20 @@ function MainChatPage() {
       </nav>
       <ChatCardComponent />
       <ChatCardComponent />
+      <div className="flex justify-center items-center">
+        <textarea
+          id="chat-input"
+          placeholder="Type your message..."
+          className="bg-gray-800 text-gray-100 mt-4 w-2/5 rounded py-3 px-4 font-medium"
+        />
+
+        <button
+          type="button"
+          className="bg-blue-500 mt-3 hover:bg-blue-600 text-white font-bold w-24 h-12 rounded ml-2"
+        >
+          ➜ ➜ ➜
+        </button>
+      </div>
     </div>
   );
 }
