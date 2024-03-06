@@ -1,6 +1,7 @@
 import React from "react";
 import birdLogo from "../assets/bird-beverage.svg";
 import { ReactTyped } from "react-typed";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   return (
@@ -9,18 +10,18 @@ function LandingPage() {
         <img className="w-24" src={birdLogo} alt="coconut-tree-image" />
         <h1 className="font-serif text-6xl">Krazy Talk Baazar</h1>
         <ul className="flex">
-          <a
-            href="#"
+          <Link
+            to={"/Signin"}
             className="ml-4 ml-4 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded tracking-wide"
           >
             Login
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to={"/Signup"}
             className="ml-4 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded tracking-wide"
           >
             Signup
-          </a>
+          </Link>
         </ul>
       </nav>
       <div>

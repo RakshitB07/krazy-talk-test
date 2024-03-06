@@ -1,6 +1,6 @@
 import React from "react";
-import ChatCardComponent from "./ChatCardComponent";
-import Sidebar from "./Sidebar";
+import ChatCardComponent from "../components/ChatCardComponent";
+import Sidebar from "../components/Sidebar";
 
 function MainChatPage() {
   return (
