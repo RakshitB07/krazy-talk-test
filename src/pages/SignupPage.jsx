@@ -4,6 +4,7 @@ import axios from "axios";
 function SignupPage() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
+  const [loginSuccess, setLoginSuccess] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,6 +59,7 @@ function SignupPage() {
             username,
             password,
           });
+          setLoginSuccess("User created successfully, You can login now!");
           console.log("User created successfully");
         }
       } catch (error) {
@@ -110,13 +112,16 @@ function SignupPage() {
               id="password"
               type="password"
               name="password"
-              placeholder="******************"
+              placeholder="********"
               value={formData.password}
               onChange={handleInputChange}
             />
             {errors.password && (
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
+            <div className="text-green-500">
+              <p>{loginSuccess}</p>
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <button

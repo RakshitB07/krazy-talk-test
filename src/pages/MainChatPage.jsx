@@ -1,8 +1,35 @@
 import React from "react";
 import ChatCardComponent from "../components/ChatCardComponent";
 import Sidebar from "../components/Sidebar";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function MainChatPage() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const checkToken = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        // Token is not present, redirect to login page
+        navigate("/signin");
+      }
+    };
+
+    // Check for token when component mounts
+    checkToken();
+
+    // Set an interval to check for token every 5 minutes
+    const intervalId = setInterval(checkToken, 5 * 60 * 1000); // 5 minutes in milliseconds
+
+    // Clear interval when component unmounts
+    return () => clearInterval(intervalId);
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/signin");
+  };
+
   return (
     <div>
       <Sidebar />
@@ -12,7 +39,7 @@ function MainChatPage() {
         <h1 className="font-serif text-6xl">Chat</h1>
         <ul className="flex">
           <a
-            href="#"
+            onClick={handleLogout}
             className="ml-4 ml-4 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded tracking-wide"
           >
             Logout

@@ -17,7 +17,6 @@ const readUserData = async () => {
     const data = await readFileAsync(filePath, { encoding: "utf8" });
     return JSON.parse(data);
   } catch (error) {
-    // If the file doesn't exist, return an empty array
     if (error.code === "ENOENT") {
       return [];
     } else {
@@ -47,12 +46,11 @@ app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
   const userDB = await readUserData();
 
-  // Prevent duplicate usernames
   if (userDB.find((user) => user.username === username)) {
     return res.status(400).send("Username already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 13);
+  const hashedPassword = await bcrypt.hash(password, 14);
   userDB.push({ username, password: hashedPassword });
   await writeUserData(userDB);
 
@@ -71,9 +69,10 @@ app.post("/login", async (req, res) => {
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
     return res.status(401).send("Invalid password");
+  } else {
+    // Send success response on valid login
+    res.send("Login successful");
   }
-
-  res.send("Login successful");
 });
 
 app.listen(8080, () => console.log("Auth Server Is Running"));

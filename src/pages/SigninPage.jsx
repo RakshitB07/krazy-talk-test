@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 function SigninPage() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,20 +20,53 @@ function SigninPage() {
   const handleSignIn = async () => {
     const { username, password } = formData;
 
+    // Input validation
+    if (!username || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:8080/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        {
+          username,
+          password,
+        },
+        {
+          timeout: 10000,
+        }
+      );
+      // Generate a unique token for the session
+      const token = uuidv4();
+
+      // Store the token in local storage
+      localStorage.setItem("token", token);
+
+      // Set a timeout to remove the token after 15 minutes
+      setTimeout(() => {
+        localStorage.removeItem("token");
+      }, 30 * 60 * 1000); // 30 minutes in milliseconds
+
+      console.log(token);
       console.log("Login successful");
-      // Handle successful login (e.g., redirect to another page)
+      // Handle successful login and redirect
+      navigate("/mainchat");
     } catch (error) {
-      if (error.response.status === 404) {
-        setError("Username not found");
-      } else if (error.response.status === 401) {
-        setError("Invalid password");
+      if (error.response) {
+        if (error.response.status === 404) {
+          setError("Username not found");
+        } else if (error.response.status === 401) {
+          setError("Invalid password");
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+        if (error.code === "ECONNABORTED") {
+          setError("A timeout occurred. Please try again.");
+        }
       } else {
-        setError("An error occurred. Please try again later.");
+        setError("An error occurred. Please check your network connection.");
+        console.error(error);
       }
     }
   };
@@ -74,7 +110,7 @@ function SigninPage() {
               id="password"
               type="password"
               name="password"
-              placeholder="******************"
+              placeholder="********"
               value={formData.password}
               onChange={handleInputChange}
             />
@@ -82,17 +118,18 @@ function SigninPage() {
           </div>
           <div className="flex items-center justify-between">
             <button
+              onClick={handleSignIn}
               className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               Sign In
             </button>
-            <a
+            {/* <a
               className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-800"
               href="#"
             >
               Forgot Password?
-            </a>
+            </a> */}
           </div>
         </form>
       </div>
