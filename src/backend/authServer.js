@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import express from "express";
 import fs from "fs";
-import { promisify } from "util";
+import {promisify} from "util";
 import cors from "cors";
 
 const app = express();
@@ -13,66 +13,66 @@ const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
 const readUserData = async () => {
-  try {
-    const data = await readFileAsync(filePath, { encoding: "utf8" });
-    return JSON.parse(data);
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      return [];
-    } else {
-      throw error;
+    try {
+        const data = await readFileAsync(filePath, {encoding: "utf8"});
+        return JSON.parse(data);
+    } catch (error) {
+        if (error.code === "ENOENT") {
+            return [];
+        } else {
+            throw error;
+        }
     }
-  }
 };
 
 const writeUserData = async (data) => {
-  const jsonData = JSON.stringify(data, null, 2);
-  await writeFileAsync(filePath, jsonData, { encoding: "utf8" });
+    const jsonData = JSON.stringify(data, null, 2);
+    await writeFileAsync(filePath, jsonData, {encoding: "utf8"});
 };
 
 app.post("/checkusername", async (req, res) => {
-  const { username } = req.body;
-  const userDB = await readUserData();
+    const {username} = req.body;
+    const userDB = await readUserData();
 
-  const user = userDB.find((user) => user.username === username);
-  if (user) {
-    res.send({ exists: true });
-  } else {
-    res.send({ exists: false });
-  }
+    const user = userDB.find((user) => user.username === username);
+    if (user) {
+        res.send({exists: true});
+    } else {
+        res.send({exists: false});
+    }
 });
 
 app.post("/signup", async (req, res) => {
-  const { username, password } = req.body;
-  const userDB = await readUserData();
+    const {username, password, profilePicture} = req.body;
+    const userDB = await readUserData();
 
-  if (userDB.find((user) => user.username === username)) {
-    return res.status(400).send("Username already exists");
-  }
+    if (userDB.find((user) => user.username === username)) {
+        return res.status(400).send("Username already exists");
+    }
 
-  const hashedPassword = await bcrypt.hash(password, 14);
-  userDB.push({ username, password: hashedPassword });
-  await writeUserData(userDB);
+    const hashedPassword = await bcrypt.hash(password, 14);
+    userDB.push({username, password: hashedPassword, profilePicture});
+    await writeUserData(userDB);
 
-  res.send("User created successfully");
+    res.send("User created successfully");
 });
 
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const userDB = await readUserData();
+    const {username, password} = req.body;
+    const userDB = await readUserData();
 
-  const user = userDB.find((user) => user.username === username);
-  if (!user) {
-    return res.status(404).send("Username not found");
-  }
+    const user = userDB.find((user) => user.username === username);
+    if (!user) {
+        return res.status(404).send("Username not found");
+    }
 
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) {
-    return res.status(401).send("Invalid password");
-  } else {
-    // Send success response on valid login
-    res.send("Login successful");
-  }
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+        return res.status(401).send("Invalid password");
+    } else {
+        // Send success response on valid login
+        res.send("Login successful");
+    }
 });
 
 app.listen(8080, () => console.log("Auth Server Is Running"));

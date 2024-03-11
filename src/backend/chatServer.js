@@ -1,23 +1,67 @@
-import avatars from "../assets/lots-of-avatars/";
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import Message from "../models/messageModel.js";
+import dotenv from "dotenv";
 
-// const avatars = [
-//     "https://example.com/avatar1.jpg",
-//     "https://example.com/avatar2.jpg"
-//   ];
+dotenv.config();
+const app = express();
+const PORT = 5020;
 
-const messages = [
-  {
-    avatarSrc: avatars[0],
-    name: "Alice",
-    date: "2024-02-23",
-    message: "Hello, how are you?",
-  },
-  {
-    avatarSrc: avatars[1],
-    name: "Bob",
-    date: "2024-02-23",
-    message: "I'm good, thank you. How about you?",
-  },
-];
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI + "/krazyChat");
+        console.log('Database connected successfully');
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
+    }
+};
 
-module.exports = { avatars, messages };
+connectDB();
+
+
+app.use(express.json());
+
+
+app.use(cors());
+
+
+app.get("/api/test", async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.status(200).json({message: "Database connection is working"});
+    } catch (error) {
+        res.status(500).json({error: "Database connection error", message: error.message});
+    }
+});
+
+app.post("/api/messages", async (req, res) => {
+    const {user, message} = req.body;
+    try {
+        const newMessage = new Message({user, message});
+        await newMessage.save();
+        res.status(201).json(newMessage);
+    } catch (error) {
+        // pass the actual error message along with the response
+        res.status(500).json({error: "Error saving message", message: error.message});
+    }
+});
+
+app.get("/api/messages", async (req, res) => {
+    try {
+        const messages = await Message.find();
+        res.json(messages);
+    } catch (error) {
+        // pass the actual error message along with the response
+        res.status(500).json({error: "Error retrieving messages", message: error.message});
+    }
+});
+
+app.get("/", (req, res) => {
+    res.send("API is running...");
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

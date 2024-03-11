@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function SignupPage() {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
   const [errors, setErrors] = useState({});
   const [loginSuccess, setLoginSuccess] = useState("");
 
@@ -42,6 +45,10 @@ function SignupPage() {
     }
 
     if (Object.keys(newErrors).length === 0) {
+      setFormData((prevData) => ({
+        ...prevData,
+      }));
+
       try {
         // Check if username already exists
         const response = await axios.post(
