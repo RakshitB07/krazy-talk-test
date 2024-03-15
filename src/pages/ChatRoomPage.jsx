@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ChatCardComponent from "../components/ChatCardComponent";
 import Sidebar from "../components/Sidebar";
 import {useNavigate, useParams} from "react-router-dom";
@@ -6,7 +6,7 @@ import userData from "../data/hashedUserData.json";
 import axios from "axios";
 import {format} from 'date-fns';
 
-function MainChatPage() {
+function ChatRoomPage() {
     const navigate = useNavigate();
     const {roomName} = useParams();
     const username = localStorage.getItem("username");
@@ -45,7 +45,7 @@ function MainChatPage() {
                 }
             }, 5 * 60 * 1000);
 
-           
+
             return () => clearInterval(intervalId);
         }
     }, [checkingToken, navigate]);
@@ -70,7 +70,7 @@ function MainChatPage() {
 
     const sendMessage = () => {
         axios
-            .post("http://localhost:5020/api/messages", {user: username, message: newMessage})
+            .post("http://localhost:5020/api/messages", {user: username, message: newMessage, roomName: roomName})
             .then(() => {
                 fetchMessages();
             })
@@ -78,6 +78,7 @@ function MainChatPage() {
 
         setNewMessage("");
     };
+
 
     return (
         <div>
@@ -92,7 +93,7 @@ function MainChatPage() {
                     >
                         Logout
                     </a>
-                    {/* Other menu items */}
+                    
                 </ul>
             </nav>
 
@@ -125,4 +126,4 @@ function MainChatPage() {
     );
 }
 
-export default MainChatPage;
+export default ChatRoomPage;

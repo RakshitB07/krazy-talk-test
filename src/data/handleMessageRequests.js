@@ -20,7 +20,4 @@ const getMessages = async () => {
     }
 };
 
-// The saveMessage and getMessages functions can be exported and used
-// in your request handlers to interact with your MongoDB database.
-
 export {saveMessage, getMessages};

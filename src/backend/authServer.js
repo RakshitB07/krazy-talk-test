@@ -1,78 +1,99 @@
-import bcrypt from "bcrypt";
 import express from "express";
-import fs from "fs";
-import {promisify} from "util";
+// import fs from "fs";
+// import {promisify} from "util";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import cors from "cors";
+import Userdata from "../models/usersDatabaseModel.js";
+import bcrypt from "bcrypt";
 
+dotenv.config();
 const app = express();
-app.use(express.json());
+const PORT = 8080;
 app.use(cors());
+app.use(express.json());
 
-const filePath = "../data/hashedUserData.json";
-const readFileAsync = promisify(fs.readFile);
-const writeFileAsync = promisify(fs.writeFile);
-
-const readUserData = async () => {
+const connectDB = async () => {
     try {
-        const data = await readFileAsync(filePath, {encoding: "utf8"});
-        return JSON.parse(data);
-    } catch (error) {
-        if (error.code === "ENOENT") {
-            return [];
-        } else {
-            throw error;
-        }
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("DB Connected");
+    } catch (err) {
+        console.error(err);
     }
 };
 
-const writeUserData = async (data) => {
-    const jsonData = JSON.stringify(data, null, 2);
-    await writeFileAsync(filePath, jsonData, {encoding: "utf8"});
-};
+connectDB().catch(console.error);
 
-app.post("/checkusername", async (req, res) => {
+app.post("/api/checkusername", async (req, res) => {
     const {username} = req.body;
-    const userDB = await readUserData();
 
-    const user = userDB.find((user) => user.username === username);
-    if (user) {
-        res.send({exists: true});
-    } else {
-        res.send({exists: false});
+    try {
+        const user = await Userdata.findOne({user: username});
+        if (user) {
+            res.send({exists: true});
+        } else {
+            res.send({exists: false});
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+
+});
+app.post("/api/login", async (req, res) => {
+    const {username, password} = req.body;
+
+    try {
+        const user = await Userdata.findOne({username: username});
+        console.log(user);
+        if (user) {
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            if (passwordMatch) {
+                res.status(200).send({success: true});
+            } else {
+                res.status(401).send({error: "Invalid password"});
+            }
+        } else {
+            res.status(404).send({error: "User not found"});
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({error: "Server error"});
     }
 });
 
-app.post("/signup", async (req, res) => {
-    const {username, password, profilePicture} = req.body;
-    const userDB = await readUserData();
 
-    if (userDB.find((user) => user.username === username)) {
+app.post("/api/signup", async (req, res) => {
+    const {username, password} = req.body;
+
+
+    if (!username || !password) {
+        return res.status(400).json({error: "Missing user or password in request body"});
+    } else if (await Userdata.findOne({username})) {
         return res.status(400).send("Username already exists");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 14);
-    userDB.push({username, password: hashedPassword, profilePicture});
-    await writeUserData(userDB);
+    try {
 
-    res.send("User created successfully");
-});
+        const hashedPassword = await bcrypt.hash(password, 14);
 
-app.post("/login", async (req, res) => {
-    const {username, password} = req.body;
-    const userDB = await readUserData();
 
-    const user = userDB.find((user) => user.username === username);
-    if (!user) {
-        return res.status(404).send("Username not found");
-    }
+        const newUser = new Userdata({username, password: hashedPassword});
 
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) {
-        return res.status(401).send("Invalid password");
-    } else {
-        // Send success response on valid login
-        res.send("Login successful");
+
+        await newUser.save();
+
+
+        res.status(201).json(newUser);
+    } catch (error) {
+
+        res.status(500).json({error: "Error saving User Data", message: error.message});
     }
 });
 
-app.listen(8080, () => console.log("Auth Server Is Running"));
+
+app.listen(PORT, () => {
+    console.log(`Auth Server is running on port ${PORT}`);
+});

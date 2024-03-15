@@ -1,113 +1,122 @@
 import React from "react";
 import birdLogo from "../assets/bird-beverage.svg";
-import { ReactTyped } from "react-typed";
-import { Link } from "react-router-dom";
+import {ReactTyped} from "react-typed";
+import {Link} from "react-router-dom";
 
 function LandingPage() {
-  return (
-    <div>
-      <nav className="flex justify-between items-center px-4 py-2">
-        <img className="w-24" src={birdLogo} alt="coconut-tree-image" />
-        <h1 className="font-serif text-6xl">Krazy Talk Baazar</h1>
-        <ul className="flex">
-          <Link
-            to={"/Signin"}
-            className="ml-4 ml-4 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded tracking-wide"
-          >
-            Login
-          </Link>
-          <Link
-            to={"/Signup"}
-            className="ml-4 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded tracking-wide"
-          >
-            Signup
-          </Link>
-        </ul>
-      </nav>
-      <div>
-        <div className="text-5xl w-6/12 mx-auto text-left mt-44">
-          <p>
-            Ever wished for an all in one website? Wait no more! Now you can,{" "}
-            <span>
-              <ReactTyped
-                strings={["Chat", "Shop", "Listen to music", "Watch videos"]}
-                typeSpeed={40}
-                backSpeed={50}
-                loop
-                className="text-orange-500"
-              />
-            </span>
-          </p>
+    return (
+        <div>
+            <nav className="flex items-center justify-between px-4 py-2">
+                <img className="w-24" src={birdLogo} alt="coconut-tree-image"/>
+                <h1 className="font-serif text-6xl">Krazy Talk</h1>
+                <ul className="flex">
+                    <Link
+                        to={"/Signin"}
+                        className="ml-4 rounded bg-orange-500 px-4 py-2 font-bold tracking-wide text-white hover:bg-orange-700"
+                    >
+                        Login
+                    </Link>
+                    <Link
+                        to={"/Signup"}
+                        className="ml-4 rounded bg-orange-500 px-4 py-2 font-bold tracking-wide text-white hover:bg-orange-700"
+                    >
+                        Signup
+                    </Link>
+                </ul>
+            </nav>
+            <div>
+                {/*    <div className="mx-auto mt-44 w-6/12 text-left text-5xl">*/}
+                {/*        <p>*/}
+                {/*            Ever wished for an all in one website? Wait no more! Now you can,{" "}*/}
+                {/*            <span>*/}
+                {/*  <ReactTyped*/}
+                {/*      strings={["Chat", "Shop", "Listen to music", "Watch videos"]}*/}
+                {/*      typeSpeed={40}*/}
+                {/*      backSpeed={50}*/}
+                {/*      loop*/}
+                {/*      className="text-orange-500"*/}
+                {/*  />*/}
+                {/*</span>*/}
+                {/*        </p>*/}
 
-          <p>All from one website!!</p>
+                {/*        <p>All from one website!!</p>*/}
+                {/*    </div>*/}
+                <div className="mx-auto mt-44 w-6/12 text-left text-5xl text-stone-800">
+                    <p>
+                        Not a discord clone. But the idea is definitely there... <span
+                        className="text-orange-500">Right?</span>
+
+                    </p>
+
+
+                </div>
+
+                <section className="mt-56 rounded bg-slate-400">
+                    <div className="mx-auto max-w-screen-md px-4 py-8 lg:py-16">
+                        <h2 className="mb-4 text-center text-4xl font-extrabold tracking-tight text-stone-900">
+                            Contact Us
+                        </h2>
+                        <p className="mb-8 text-center font-light text-stone-600 sm:text-xl lg:mb-16">
+                            Got a technical issue? Want to send feedback about a beta feature?
+                            Let us know.
+                        </p>
+                        <form action="#" className="space-y-8">
+                            <div>
+                                <label
+                                    htmlFor="email"
+                                    className="mb-2 block text-sm font-medium text-gray-900"
+                                >
+                                    Your email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 shadow-sm p-2.5 focus:ring-primary-500 focus:border-primary-500"
+                                    placeholder="name@example.com"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    htmlFor="subject"
+                                    className="mb-2 block text-sm font-medium text-gray-900"
+                                >
+                                    Subject
+                                </label>
+                                <input
+                                    type="text"
+                                    id="subject"
+                                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 shadow-sm focus:ring-primary-500 focus:border-primary-500"
+                                    placeholder="Let us know how we can help you"
+                                    required
+                                />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <label
+                                    htmlFor="message"
+                                    className="mb-2 block text-sm font-medium text-gray-900"
+                                >
+                                    Your message
+                                </label>
+                                <textarea
+                                    id="message"
+                                    rows="6"
+                                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 shadow-sm p-2.5 focus:ring-primary-500 focus:border-primary-500"
+                                    placeholder="Leave a comment..."
+                                ></textarea>
+                            </div>
+                            <button
+                                type="submit"
+                                className="rounded border border-blue-500 bg-transparent px-4 py-2 text-center text-sm font-semibold text-blue-500 hover:border-transparent hover:bg-orange-500 hover:text-white focus:ring-primary-300 focus:outline-none focus:ring-4 sm:w-fit"
+                            >
+                                Send message
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </div>
         </div>
-
-        <section className="mt-56 bg-slate-400 rounded">
-          <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-stone-900">
-              Contact Us
-            </h2>
-            <p className="mb-8 lg:mb-16 font-light text-center text-stone-600 sm:text-xl">
-              Got a technical issue? Want to send feedback about a beta feature?
-              Let us know.
-            </p>
-            <form action="#" className="space-y-8">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                >
-                  Your email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                  placeholder="name@example.com"
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                >
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Let us know how we can help you"
-                  required
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="message"
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                >
-                  Your message
-                </label>
-                <textarea
-                  id="message"
-                  rows="6"
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Leave a comment..."
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className=" text-sm text-center sm:w-fit focus:ring-4 focus:outline-none focus:ring-primary-300 bg-transparent hover:bg-orange-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              >
-                Send message
-              </button>
-            </form>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default LandingPage;

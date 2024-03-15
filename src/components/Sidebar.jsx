@@ -1,35 +1,58 @@
-import React from "react";
-import hashSvg from "../assets/hash-svgrepo-com.svg";
+// Sidebar component
+import React, {useState} from "react";
+import plusSvg from "../assets/plus-square-svgrepo-com.svg";
+import ChatRoomComponent from "./ChatRoomComponent.jsx";
+import {useNavigate} from 'react-router-dom';
 
 function Sidebar() {
+    const navigate = useNavigate();
+    const [currentChatRoom, setCurrentChatRoom] = useState("Random");
+
+
+    const handleRoomSelect = (roomName) => {
+        setCurrentChatRoom(roomName);
+        navigate(`/chat/${roomName}`);
+    };
+
+
+    const roomNames = ["Random", "Tech", "Shop", "Chat", "Music", "Health", "Gaming"];
     return (
         <aside
             id="default-sidebar"
-            className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            className="fixed top-0 left-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
             aria-label="Sidebar"
         >
-            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800">
-                <h1 className="text-2xl mb-4 text-center font-black bg-orange-500 text-white border border-stone-50 rounded border-solid p-2">
+            <div className="h-full overflow-y-auto bg-gray-800 px-3 py-4">
+                <h1 className="mb-4 rounded border border-solid border-stone-50 bg-orange-500 p-2 text-center text-2xl font-black text-white">
                     Social Clubs
                 </h1>
 
-                <ul className="space-y-2 font-medium">
+                <ul className="font-medium space-y-2">
+                    {roomNames.map(room => (
+                        <ChatRoomComponent
+                            key={room}
+                            roomName={room}
+                            onSelect={handleRoomSelect}
+                            isActive={currentChatRoom === room}
+                        />
+                    ))}
+
                     <li>
+
                         <a
-                            href="#"
-                            className="flex items-center p-2  rounded-lg text-white  hover:bg-gray-700 group"
+
+                            className="flex items-center justify-center rounded-lg p-2 text-white group hover:bg-gray-700"
                         >
                             <img
-                                src={hashSvg}
-                                className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-white"
-                                alt="Dashboard"
+                                src={plusSvg}
+                                className="h-8 w-8 text-white transition duration-75"
+                                alt="Add new category"
                             />
-                            <span className="ms-3 font-bold">Technology</span>
                         </a>
                     </li>
-                    {/* Repeat the above pattern for more categories */}
                 </ul>
             </div>
+
         </aside>
     );
 }

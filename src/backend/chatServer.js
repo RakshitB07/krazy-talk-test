@@ -37,26 +37,26 @@ app.get("/api/test", async (req, res) => {
 });
 
 app.post("/api/messages", async (req, res) => {
-    const {user, message} = req.body;
+    const {user, message, roomName} = req.body;
     try {
-        const newMessage = new Message({user, message});
+        const newMessage = new Message({user, message, roomName});
         await newMessage.save();
         res.status(201).json(newMessage);
     } catch (error) {
-        // pass the actual error message along with the response
         res.status(500).json({error: "Error saving message", message: error.message});
     }
 });
 
-app.get("/api/messages", async (req, res) => {
+app.get("/api/messages/:roomName", async (req, res) => {
+    const {roomName} = req.params;
     try {
-        const messages = await Message.find();
+        const messages = await Message.find({roomName});
         res.json(messages);
     } catch (error) {
-        // pass the actual error message along with the response
         res.status(500).json({error: "Error retrieving messages", message: error.message});
     }
 });
+
 
 app.get("/", (req, res) => {
     res.send("API is running...");

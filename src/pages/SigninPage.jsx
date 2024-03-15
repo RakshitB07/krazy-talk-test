@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import {v4 as uuidv4} from "uuid";
 import {useNavigate} from "react-router-dom";
@@ -28,7 +28,7 @@ function SigninPage() {
 
         try {
             const response = await axios.post(
-                "http://localhost:8080/login",
+                "http://localhost:8080/api/login",
                 {
                     username,
                     password,
@@ -37,33 +37,29 @@ function SigninPage() {
                     timeout: 10000,
                 }
             );
-            // Generate a unique token for the session
+
             const token = uuidv4();
 
-            // Store the token in local storage
+
             localStorage.setItem("token", token);
 
-            // Store the username in local storage
+
             localStorage.setItem("username", username);
 
-            // Set the token expiry date/time
+
             const tokenExpiry = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 hours in milliseconds
             localStorage.setItem("tokenExpiry", tokenExpiry.toString());
 
-            // Set a timeout to remove the token after 24 hours
+
             setTimeout(() => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("tokenExpiry");
             }, 24 * 60 * 60 * 1000);
 
-            // // Set a timeout to remove the token after 15 minutes
-            // setTimeout(() => {
-            //   localStorage.removeItem("token");
-            // }, 30 * 60 * 1000); // 30 minutes in milliseconds
 
             console.log(token);
             console.log("Login successful");
-            // Handle successful login and redirect
+
             navigate("/mainchat");
         } catch (error) {
             if (error.response) {
@@ -85,10 +81,10 @@ function SigninPage() {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex h-screen items-center justify-center">
             <div className="w-full max-w-xs">
                 <form
-                    className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+                    className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md"
                     onSubmit={(e) => {
                         e.preventDefault();
                         handleSignIn();
@@ -96,13 +92,13 @@ function SigninPage() {
                 >
                     <div className="mb-4">
                         <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
+                            className="mb-2 block text-sm font-bold text-gray-700"
                             htmlFor="username"
                         >
                             Username
                         </label>
                         <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:shadow-outline focus:outline-none"
                             id="username"
                             type="text"
                             name="username"
@@ -113,13 +109,13 @@ function SigninPage() {
                     </div>
                     <div className="mb-6">
                         <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
+                            className="mb-2 block text-sm font-bold text-gray-700"
                             htmlFor="password"
                         >
                             Password
                         </label>
                         <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                            className="mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:shadow-outline focus:outline-none"
                             id="password"
                             type="password"
                             name="password"
@@ -127,18 +123,18 @@ function SigninPage() {
                             value={formData.password}
                             onChange={handleInputChange}
                         />
-                        {error && <p className="text-red-500 text-xs italic">{error}</p>}
+                        {error && <p className="text-xs italic text-red-500">{error}</p>}
                     </div>
                     <div className="flex items-center justify-between">
                         <button
                             onClick={handleSignIn}
-                            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            className="rounded bg-orange-500 px-4 py-2 font-bold text-white hover:bg-orange-700 focus:shadow-outline focus:outline-none"
                             type="submit"
                         >
                             Sign In
                         </button>
                         {/* <a
-              className="inline-block align-baseline font-bold text-sm text-orange-500 hover:text-orange-800"
+              className="inline-block align-baseline text-sm font-bold text-orange-500 hover:text-orange-800"
               href="#"
             >
               Forgot Password?
