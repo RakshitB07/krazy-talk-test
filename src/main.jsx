@@ -7,6 +7,8 @@ import SigninPage from "./pages/SigninPage.jsx";
 import MainChatPage from "./pages/MainChatPage.jsx";
 import ChatRoomPage from "./pages/ChatRoomPage.jsx";
 import {disableReactDevTools} from "@fvilers/disable-react-devtools";
+import dotenv from "dotenv";
+
 
 if (process.env.NODE_ENV === "production") {
     disableReactDevTools();
