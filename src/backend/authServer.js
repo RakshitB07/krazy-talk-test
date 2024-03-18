@@ -9,12 +9,12 @@ import bcrypt from "bcrypt";
 
 dotenv.config();
 const app = express();
-const PORT = 8080;
+const PORT = process.env.AUTH_PORT;
 
 
 // Use it before all route definitions
 app.use(cors({
-    origin: 'https://krazy-talk-test.vercel.app/' // Replace with the domain/port of your frontend app
+    origin: 'https://krazy-talk-test.vercel.app' // Replace with the domain/port of your frontend app
   }));
 
 
