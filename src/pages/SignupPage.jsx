@@ -52,7 +52,7 @@ function SignupPage() {
             try {
 
                 const response = await axios.post(
-                    "http://localhost:8080/api/checkusername",
+                    "https://krazy-talk-test.vercel.app:8702/api/checkusername",
                     {
                         username,
                     }
@@ -62,7 +62,7 @@ function SignupPage() {
                     setErrors(newErrors);
                 } else {
 
-                    await axios.post("http://localhost:8080/api/signup", {
+                    await axios.post("https://krazy-talk-test.vercel.app:8702/api/signup", {
                         username,
                         password,
                     });

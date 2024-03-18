@@ -52,7 +52,7 @@ function MainChatPage() {
 
     const fetchMessages = () => {
         axios
-            .get(`http://localhost:5020/api/messages/${roomName}`)
+            .get(`https://krazy-talk-test.vercel.app:4907/api/messages/${roomName}`)
             .then((response) => {
                 if (Array.isArray(response.data)) {
                     setMessages(response.data);
@@ -70,7 +70,7 @@ function MainChatPage() {
 
     const sendMessage = () => {
         axios
-            .post("http://localhost:5020/api/messages", {user: username, message: newMessage})
+            .post("https://krazy-talk-test.vercel.app:4907/api/messages", {user: username, message: newMessage})
             .then(() => {
                 fetchMessages();
             })
