@@ -1,6 +1,6 @@
 import React from "react";
 import birdLogo from "../assets/bird-beverage.svg";
-import {ReactTyped} from "react-typed";
+// import {ReactTyped} from "react-typed";
 import {Link} from "react-router-dom";
 
 function LandingPage() {
